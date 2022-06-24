@@ -8,8 +8,15 @@
   <xacro:arg name="publish_pointcloud" default="false" />
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 
-  <link name="base_link" />
-  <xacro:sensor_d435 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)" name="$(arg name)" topics_ns="$(arg topics_ns)" publish_pointcloud="$(arg publish_pointcloud)">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <xacro:arg name="cam_x"           default="0"     doc="How far forward to place the base of the robot in [m]?" />
+  <xacro:arg name="cam_y"           default="0"     doc="How far leftwards to place the base of the robot in [m]?" />
+  <xacro:arg name="cam_z"           default="0"     doc="How far upwards to place the base of the robot in [m]?" />
+  <xacro:arg name="cam_roll"        default="0"     doc="How much to rotate the base of the robot around its X-axis in [rad]?" />
+  <xacro:arg name="cam_pitch"       default="0"     doc="How much to rotate the base of the robot around its Y-axis in [rad]?" />
+  <xacro:arg name="cam_yaw"         default="0"     doc="How much to rotate the base of the robot around its Z-axis in [rad]?" />
+
+  <link name="world" />
+  <xacro:sensor_d435 parent="world" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)" name="$(arg name)" topics_ns="$(arg topics_ns)" publish_pointcloud="$(arg publish_pointcloud)">
+    <origin xyz="$(arg cam_x) $(arg cam_y) $(arg cam_z)" rpy="$(arg cam_roll) $(arg cam_pitch) $(arg cam_yaw)"/>
   </xacro:sensor_d435>
 </robot>
