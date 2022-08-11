@@ -29,10 +29,10 @@ This is the Gazebo URDF model for the Intel RealSense D435 camera
       <min_depth>0</min_depth>-->
       <sensor name="${camera_name}color" type="camera">
         <camera name="${camera_name}">
-          <horizontal_fov>${69.4*deg_to_rad}</horizontal_fov>
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov> <!-- 69.4*deg_to_rad -->
           <image>
-            <width>640</width>
-            <height>480</height>
+            <width>1280</width>  <!-- 640 -->
+            <height>720</height> <!-- 480 -->
             <format>RGB_INT8</format>
           </image>
           <clip>
@@ -70,7 +70,7 @@ This is the Gazebo URDF model for the Intel RealSense D435 camera
         <always_on>1</always_on>
         <update_rate>${fps}</update_rate> <!-- 90 -->
         <visualize>0</visualize>
-      </sensor>
+      </sensor> 
       <sensor name="${camera_name}ired2" type="camera">
         <camera name="${camera_name}">
           <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
@@ -92,7 +92,7 @@ This is the Gazebo URDF model for the Intel RealSense D435 camera
         <always_on>1</always_on>
         <update_rate>${fps}</update_rate> <!-- 90 -->
         <visualize>0</visualize>
-      </sensor>
+      </sensor> 
       <sensor name="${camera_name}depth" type="depth">
         <camera name="${camera_name}">
           <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
