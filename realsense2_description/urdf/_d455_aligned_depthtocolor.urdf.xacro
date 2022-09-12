@@ -87,6 +87,13 @@ aluminum peripherial evaluation case.
     <!-- Use the nominal extrinsics between camera frames if the calibrated extrinsics aren't being published. e.g. running the device in simulation  -->
     <xacro:if value="${use_nominal_extrinsics}">
       <!-- camera depth joints and links -->
+      <joint name="${name}_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-M_PI/2} 0 ${-M_PI/2}" />
+        <parent link="${name}_link" />
+        <child link="${name}_optical_frame" />
+      </joint>
+      <link name="${name}_optical_frame"/>
+
       <joint name="${name}_depth_joint" type="fixed">
         <origin xyz="0 ${d455_cam_depth_to_color_offset} 0" rpy="0 0 0"/> <!-- added offset here to match depth to color frame (originally xyz = 0,0,0)-->
         <parent link="${name}_link"/>
