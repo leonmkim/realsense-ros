@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sensor_d455">
+
+  <xacro:macro name="6dof_joint" params="parent child">
+    <!-- camera body, with origin at bottom screw mount -->
+    <joint name="${name}_trans_x_joint" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${parent}"/>
+      <child link="${name}_x_temp_link" />
+    </joint>
+    <link name="${name}_x_temp_link">
+    </link>
+
+    <joint name="${name}_trans_y_joint" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${name}_x_temp_link"/>
+      <child link="${name}_y_temp_link" />
+    </joint>
+    <link name="${name}_y_temp_link"/>
+
+    <joint name="${name}_trans_z_joint" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${name}_y_temp_link"/>
+      <child link="${child}" />
+      <!-- <child link="${name}_z_temp_link" /> -->
+    </joint>
+    <!-- <link name="${name}_z_temp_link"/> -->
+
+  </xacro:macro>
+
+</robot>
