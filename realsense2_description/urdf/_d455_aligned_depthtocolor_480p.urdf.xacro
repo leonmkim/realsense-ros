@@ -10,12 +10,11 @@ aluminum peripherial evaluation case.
 
 <robot name="sensor_d455" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Includes -->
-  <xacro:include filename="$(find realsense2_description)/urdf/_d455_aligned_depthtocolor_180320.gazebo.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d455_aligned_depthtocolor_480p.gazebo.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/_materials.urdf.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/_usb_plug.urdf.xacro" />
-  <xacro:include filename="$(find realsense2_description)/urdf/6dof_joint.xacro" />
 
-  <xacro:macro name="sensor_d455" params="name:=camera use_nominal_extrinsics:=false add_plug:=false topics_ns:=camera fps:=30 publish_pointcloud:=true">
+  <xacro:macro name="sensor_d455" params="parent *origin name:=camera use_nominal_extrinsics:=false add_plug:=false topics_ns:=camera fps:=30 publish_pointcloud:=true">
     <!-- <xacro:arg name="add_plug" default="false" /> -->
     <xacro:property name="M_PI" value="3.1415926535897931" />
 
@@ -46,7 +45,12 @@ aluminum peripherial evaluation case.
     <xacro:property name="d455_cam_depth_py" value="0.0475"/>
     <xacro:property name="d455_cam_depth_pz" value="${d455_cam_height/2}"/>
 
-    <!-- <xacro:6dof_joint parent='${parent}' child='${name}_bottom_screw_frame' /> -->
+    <!-- camera body, with origin at bottom screw mount -->
+    <joint name="${name}_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}"/>
+      <child link="${name}_bottom_screw_frame" />
+    </joint>
     <link name="${name}_bottom_screw_frame"/>
 
     <joint name="${name}_link_joint" type="fixed">
@@ -79,16 +83,7 @@ aluminum peripherial evaluation case.
         <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
       </inertial>
     </link>
-    <gazebo reference="${name}_link">
-      <collision>
-        <surface>
-          <contact>
-            <collide_bitmask>0x0</collide_bitmask>
-          </contact>
-        </surface>
-      </collision>
-      <gravity>0</gravity>
-    </gazebo>
+
     <!-- Use the nominal extrinsics between camera frames if the calibrated extrinsics aren't being published. e.g. running the device in simulation  -->
     <xacro:if value="${use_nominal_extrinsics}">
       <!-- camera depth joints and links -->
