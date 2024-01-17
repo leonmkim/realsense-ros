@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot name="realsense2_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_nominal_extrinsics" default="false"/>
+  <xacro:arg name="add_plug" default="false" />
+  <xacro:arg name="name" default="camera" />
+  <xacro:arg name="topics_ns" default="camera" />
+  <xacro:arg name="publish_pointcloud" default="false" />
+  <xacro:arg name="cam_pose_config" default="$(find contact_simulation)/config/cam_pose.yaml" />
+
+  <xacro:include filename="$(find realsense2_description)/urdf/_l515_aligned_depthtocolor_6dof.urdf.xacro" />
+
+  <xacro:property name="yaml_file" value="$(arg cam_pose_config)" />
+  <xacro:property name="cam_pose" value="${xacro.load_yaml(yaml_file)}"/>
+  
+  <xacro:arg name="fps"       default="30"     doc="Frame rate of depth and color image" />
+
+  <!-- <link name="world" /> -->
+  <xacro:sensor_l515 use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" name="$(arg name)" topics_ns="$(arg topics_ns)" fps="$(arg fps)" publish_pointcloud="$(arg publish_pointcloud)">
+  </xacro:sensor_l515>
+</robot>
