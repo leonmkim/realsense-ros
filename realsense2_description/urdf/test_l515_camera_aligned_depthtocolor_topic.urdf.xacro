@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot name="realsense2_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_nominal_extrinsics" default="false"/>
+  <xacro:arg name="add_plug" default="false" />
+  <xacro:arg name="name" default="camera" />
+  <xacro:arg name="topics_ns" default="camera" />
+  <xacro:arg name="publish_pointcloud" default="false" />
+  <xacro:arg name="cam_pose_config" default="$(find fish_simulation)/config/cam_pose.yaml" />
+
+  <xacro:include filename="$(find realsense2_description)/urdf/_l515_aligned_depthtocolor_topic.urdf.xacro" />
+
+  <xacro:property name="yaml_file" value="$(arg cam_pose_config)" />
+  <xacro:property name="cam_pose" value="${xacro.load_yaml(yaml_file)}"/>
+  
+  <xacro:property name="cam_x"           value="${cam_pose['x']}"     doc="How far forward to place the base of the robot in [m]?" />
+  <xacro:property name="cam_y"           value="${cam_pose['y']}"     doc="How far leftwards to place the base of the robot in [m]?" />
+  <xacro:property name="cam_z"           value="${cam_pose['z']}"     doc="How far upwards to place the base of the robot in [m]?" />
+  <xacro:property name="cam_roll"        value="${cam_pose['roll']}"     doc="How much to rotate the base of the robot around its X-axis in [rad]?" />
+  <xacro:property name="cam_pitch"       value="${cam_pose['pitch']}"     doc="How much to rotate the base of the robot around its Y-axis in [rad]?" />
+  <xacro:property name="cam_yaw"         value="${cam_pose['yaw']}"     doc="How much to rotate the base of the robot around its Z-axis in [rad]?" />
+
+  <xacro:arg name="fps"       default="30"     doc="Frame rate of depth and color image" />
+
+  <link name="world" />
+  <xacro:sensor_l515 parent="world" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" name="$(arg name)" topics_ns="$(arg topics_ns)" fps="$(arg fps)" publish_pointcloud="$(arg publish_pointcloud)">
+    <origin xyz="${cam_x} ${cam_y} ${cam_z}" rpy="${cam_roll} ${cam_pitch} ${cam_yaw}"/>
+  </xacro:sensor_l515>
+</robot>
